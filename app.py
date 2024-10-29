@@ -56,5 +56,16 @@ def add_book():
     
     return render_template('add_book.html')
 
+
+@app.route('/delete/<int:id>')
+def delete_book(id):
+    conn = sqlite3.connect('database.db')
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM books WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
+    flash('Book removed successfully.')
+    return redirect(url_for('index'))
+        
 if __name__ == '__main__':
     app.run(debug=True)
